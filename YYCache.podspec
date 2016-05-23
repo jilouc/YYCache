@@ -7,8 +7,8 @@ Pod::Spec.new do |s|
   s.social_media_url = 'http://blog.ibireme.com'
   s.homepage     = 'https://github.com/ibireme/YYCache'
   s.platforms     = {
-    'ios': '6.0',
-    'watchos': '2.0'
+    :ios => '6.0',
+    :watchos => '2.0'
   }
   s.ios.deployment_target = '6.0'
   s.source       = { :git => 'https://github.com/ibireme/YYCache.git', :tag => s.version.to_s }
