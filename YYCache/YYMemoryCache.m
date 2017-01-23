@@ -10,9 +10,11 @@
 //
 
 #import "YYMemoryCache.h"
+#import "YYTools.h"
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
+#endif
 #import <CoreFoundation/CoreFoundation.h>
-#import <QuartzCore/QuartzCore.h>
 #import <pthread.h>
 
 
@@ -266,7 +268,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (void)_trimToAge:(NSTimeInterval)ageLimit {
     BOOL finish = NO;
-    NSTimeInterval now = CACurrentMediaTime();
+    NSTimeInterval now = YYCurrentMediaTime();
     pthread_mutex_lock(&_lock);
     if (ageLimit <= 0) {
         [_lru removeAll];
@@ -402,7 +404,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
     pthread_mutex_lock(&_lock);
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
     if (node) {
-        node->_time = CACurrentMediaTime();
+        node->_time = YYCurrentMediaTime();
         [_lru bringNodeToHead:node];
     }
     pthread_mutex_unlock(&_lock);
@@ -421,7 +423,7 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
     }
     pthread_mutex_lock(&_lock);
     _YYLinkedMapNode *node = CFDictionaryGetValue(_lru->_dic, (__bridge const void *)(key));
-    NSTimeInterval now = CACurrentMediaTime();
+    NSTimeInterval now = YYCurrentMediaTime();
     if (node) {
         _lru->_totalCost -= node->_cost;
         _lru->_totalCost += cost;

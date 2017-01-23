@@ -10,7 +10,10 @@
 //
 
 #import "YYKVStorage.h"
+#import "YYTools.h"
+#if TARGET_OS_IOS
 #import <UIKit/UIKit.h>
+#endif
 #import <time.h>
 
 #if __has_include(<sqlite3.h>)
@@ -18,7 +21,6 @@
 #else
 #import "sqlite3.h"
 #endif
-
 
 static const NSUInteger kMaxErrorRetryCount = 8;
 static const NSTimeInterval kMinRetryTimeInterval = 2.0;
@@ -52,11 +54,12 @@ static NSString *const kTrashDirectoryName = @"trash";
     last_access_time    integer,
     extended_data       blob,
     primary key(key)
- ); 
+ );
  create index if not exists last_access_time_idx on manifest(last_access_time);
  */
 
 /// Returns nil in App Extension.
+#if TARGET_OS_IOS
 static UIApplication *_YYSharedApplication() {
     static BOOL isAppExtension = NO;
     static dispatch_once_t onceToken;
@@ -70,6 +73,7 @@ static UIApplication *_YYSharedApplication() {
     return isAppExtension ? nil : [UIApplication performSelector:@selector(sharedApplication)];
 #pragma clang diagnostic pop
 }
+#endif
 
 
 @implementation YYKVStorageItem
@@ -107,7 +111,7 @@ static UIApplication *_YYSharedApplication() {
         _db = NULL;
         if (_dbStmtCache) CFRelease(_dbStmtCache);
         _dbStmtCache = NULL;
-        _dbLastOpenErrorTime = CACurrentMediaTime();
+        _dbLastOpenErrorTime = YYCurrentMediaTime();
         _dbOpenErrorCount++;
         
         if (_errorLogsEnabled) {
@@ -152,7 +156,7 @@ static UIApplication *_YYSharedApplication() {
 - (BOOL)_dbCheck {
     if (!_db) {
         if (_dbOpenErrorCount < kMaxErrorRetryCount &&
-            CACurrentMediaTime() - _dbLastOpenErrorTime > kMinRetryTimeInterval) {
+            YYCurrentMediaTime() - _dbLastOpenErrorTime > kMinRetryTimeInterval) {
             return [self _dbOpen] && [self _dbInitialize];
         } else {
             return NO;
@@ -727,11 +731,13 @@ static UIApplication *_YYSharedApplication() {
 }
 
 - (void)dealloc {
-    UIBackgroundTaskIdentifier taskID = [_YYSharedApplication() beginBackgroundTaskWithExpirationHandler:^{}];
     [self _dbClose];
+#if TARGET_OS_IOS
+    UIBackgroundTaskIdentifier taskID = [_YYSharedApplication() beginBackgroundTaskWithExpirationHandler:^{}];
     if (taskID != UIBackgroundTaskInvalid) {
         [_YYSharedApplication() endBackgroundTask:taskID];
     }
+#endif
 }
 
 - (BOOL)saveItem:(YYKVStorageItem *)item {

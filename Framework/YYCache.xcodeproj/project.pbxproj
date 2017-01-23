@@ -19,6 +19,8 @@
 		D9D419171BD0F07600CD8EBF /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D419161BD0F07600CD8EBF /* CoreFoundation.framework */; };
 		D9D419191BD0F07E00CD8EBF /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D419181BD0F07E00CD8EBF /* libsqlite3.tbd */; };
 		D9D4191B1BD0F08D00CD8EBF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D4191A1BD0F08D00CD8EBF /* QuartzCore.framework */; };
+		DE323EE11E3673AA00F63043 /* YYTools.h in Headers */ = {isa = PBXBuildFile; fileRef = DE323EDF1E3673AA00F63043 /* YYTools.h */; };
+		DE323EE21E3673AA00F63043 /* YYTools.m in Sources */ = {isa = PBXBuildFile; fileRef = DE323EE01E3673AA00F63043 /* YYTools.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		D9D419161BD0F07600CD8EBF /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		D9D419181BD0F07E00CD8EBF /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D9D4191A1BD0F08D00CD8EBF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DE323EDF1E3673AA00F63043 /* YYTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYTools.h; sourceTree = "<group>"; };
+		DE323EE01E3673AA00F63043 /* YYTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTools.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 				D9D419061BD0F04000CD8EBF /* YYDiskCache.m */,
 				D9D419071BD0F04000CD8EBF /* YYKVStorage.h */,
 				D9D419081BD0F04000CD8EBF /* YYKVStorage.m */,
+				DE323EDF1E3673AA00F63043 /* YYTools.h */,
+				DE323EE01E3673AA00F63043 /* YYTools.m */,
 			);
 			name = YYCache;
 			path = ../YYCache;
@@ -109,6 +115,7 @@
 				D9D4190F1BD0F04000CD8EBF /* YYKVStorage.h in Headers */,
 				D9D4190D1BD0F04000CD8EBF /* YYDiskCache.h in Headers */,
 				D9D4190B1BD0F04000CD8EBF /* YYCache.h in Headers */,
+				DE323EE11E3673AA00F63043 /* YYTools.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +190,7 @@
 				D9D419121BD0F04000CD8EBF /* YYMemoryCache.m in Sources */,
 				D9D4190C1BD0F04000CD8EBF /* YYCache.m in Sources */,
 				D9D4190E1BD0F04000CD8EBF /* YYDiskCache.m in Sources */,
+				DE323EE21E3673AA00F63043 /* YYTools.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
