@@ -11,10 +11,12 @@
 
 #import "YYDiskCache.h"
 #import "YYKVStorage.h"
-#import <UIKit/UIKit.h>
 #import <CommonCrypto/CommonCrypto.h>
 #import <objc/runtime.h>
 #import <time.h>
+#if TARGET_OS_IOS
+#import <UIKit/UIKit.h>
+#endif
 
 #define Lock() dispatch_semaphore_wait(self->_lock, DISPATCH_TIME_FOREVER)
 #define Unlock() dispatch_semaphore_signal(self->_lock)
@@ -159,7 +161,9 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
 #pragma mark - public
 
 - (void)dealloc {
+#if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillTerminateNotification object:nil];
+#endif
 }
 
 - (instancetype)init {
@@ -205,7 +209,9 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
     [self _trimRecursively];
     _YYDiskCacheSetGlobal(self);
     
+#if TARGET_OS_IOS
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_appWillBeTerminated) name:UIApplicationWillTerminateNotification object:nil];
+#endif
     return self;
 }
 
