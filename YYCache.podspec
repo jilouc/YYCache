@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.public_header_files = 'YYCache/*.{h}'
   
   s.libraries = 'sqlite3'
-  s.frameworks = 'UIKit', 'CoreFoundation', 'QuartzCore' 
-
+  s.ios.frameworks = 'UIKit', 'CoreFoundation', 'QuartzCore' 
+  s.watchos.frameworks = 'UIKit', 'CoreFoundation'
 end
