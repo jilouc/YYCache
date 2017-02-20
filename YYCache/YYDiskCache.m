@@ -77,6 +77,13 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
     dispatch_semaphore_signal(_globalInstancesLock);
 }
 
+static void _YYDiskCacheRemoveGlobal(YYDiskCache *cache) {
+    if (cache.path.length == 0) return;
+    _YYDiskCacheInitGlobal();
+    dispatch_semaphore_wait(_globalInstancesLock, DISPATCH_TIME_FOREVER);
+    [_globalInstances removeObjectForKey:cache.path];
+    dispatch_semaphore_signal(_globalInstancesLock);
+}
 
 
 @implementation YYDiskCache {
@@ -181,7 +188,13 @@ static void _YYDiskCacheSetGlobal(YYDiskCache *cache) {
     if (!self) return nil;
     
     YYDiskCache *globalCache = _YYDiskCacheGetGlobal(path);
-    if (globalCache) return globalCache;
+    if (globalCache) {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+            return globalCache;
+        } else {
+            _YYDiskCacheRemoveGlobal(globalCache);
+        }
+    }
     
     YYKVStorageType type;
     if (threshold == 0) {
