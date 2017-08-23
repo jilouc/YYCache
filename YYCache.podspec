@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.platforms     = {
     :ios => '6.0',
     :watchos => '2.0',
-		:tvos => '10.0'
+    :tvos => '10.0'
   }
   s.ios.deployment_target = '6.0'
   s.source       = { :git => 'https://github.com/ibireme/YYCache.git', :tag => s.version.to_s }
@@ -21,5 +21,5 @@ Pod::Spec.new do |s|
   s.libraries = 'sqlite3'
   s.ios.frameworks = 'UIKit', 'CoreFoundation', 'QuartzCore' 
   s.watchos.frameworks = 'UIKit', 'CoreFoundation'
-	s.tvos.frameworks = 'UIKit', 'CoreFoundation'
+  s.tvos.frameworks = 'UIKit', 'CoreFoundation'
 end
