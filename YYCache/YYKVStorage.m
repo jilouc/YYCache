@@ -75,6 +75,24 @@ static UIApplication *_YYSharedApplication() {
 }
 #endif
 
+static void _wrapInBackgroundTask(void (^block)())
+{
+#if TARGET_OS_IOS
+    UIApplication *application = _YYSharedApplication();
+    if (application) {
+        UIBackgroundTaskIdentifier taskId = [application beginBackgroundTaskWithExpirationHandler:^{}];
+        block();
+        [application endBackgroundTask:taskId];
+        return;
+    }
+#endif
+    [[NSProcessInfo processInfo] performExpiringActivityWithReason:@"YYKVStorageWrap" usingBlock:^(BOOL expired) {
+        if (expired) {
+            return;
+        }
+        block();
+    }];
+}
 
 @implementation YYKVStorageItem
 @end
@@ -731,13 +749,9 @@ static UIApplication *_YYSharedApplication() {
 }
 
 - (void)dealloc {
-    [self _dbClose];
-#if TARGET_OS_IOS
-    UIBackgroundTaskIdentifier taskID = [_YYSharedApplication() beginBackgroundTaskWithExpirationHandler:^{}];
-    if (taskID != UIBackgroundTaskInvalid) {
-        [_YYSharedApplication() endBackgroundTask:taskID];
-    }
-#endif
+    _wrapInBackgroundTask(^{
+        [self _dbClose];
+    });
 }
 
 - (BOOL)saveItem:(YYKVStorageItem *)item {
