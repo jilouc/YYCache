@@ -182,7 +182,8 @@ static inline dispatch_queue_t YYMemoryCacheGetReleaseQueue() {
 
 - (void)_trimRecursively {
     __weak typeof(self) _self = self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_autoTrimInterval * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    NSTimeInterval trimInterval = self.autoTrimInterval;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(trimInterval * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         __strong typeof(_self) self = _self;
         if (!self) return;
         [self _trimInBackground];
