@@ -8,7 +8,7 @@
 #include <mach/mach.h>
 #include <mach/mach_time.h>
 
-NSTimeInterval YYCurrentMediaTime()
+NSTimeInterval YYCurrentMediaTime(void)
 {
     static mach_timebase_info_data_t sTimebaseInfo;
     uint64_t start = mach_absolute_time();

@@ -75,7 +75,7 @@ static UIApplication *_YYSharedApplication() {
 }
 #endif
 
-static void _wrapInBackgroundTask(void (^block)())
+static void _wrapInBackgroundTask(void (^block)(void))
 {
 #if TARGET_OS_IOS
     UIApplication *application = _YYSharedApplication();
@@ -86,12 +86,16 @@ static void _wrapInBackgroundTask(void (^block)())
         return;
     }
 #endif
-    [[NSProcessInfo processInfo] performExpiringActivityWithReason:@"YYKVStorageWrap" usingBlock:^(BOOL expired) {
-        if (expired) {
-            return;
-        }
+    if (@available(iOS 8.2, *)) {
+        [[NSProcessInfo processInfo] performExpiringActivityWithReason:@"YYKVStorageWrap" usingBlock:^(BOOL expired) {
+            if (expired) {
+                return;
+            }
+            block();
+        }];
+    } else {
         block();
-    }];
+    }
 }
 
 @implementation YYKVStorageItem

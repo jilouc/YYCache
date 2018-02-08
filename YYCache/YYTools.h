@@ -5,4 +5,4 @@
 
 #import <UIKit/UIKit.h>
 
-NSTimeInterval YYCurrentMediaTime();
+NSTimeInterval YYCurrentMediaTime(void);
